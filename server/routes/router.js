@@ -5,6 +5,7 @@ const services = require("../services/render");
 
 const controller = require("../controller/controller");
 const attendanceController = require("../controller/attendance-controller");
+const { Router } = require("express");
 
 /**
  * @description Root Route
@@ -47,12 +48,15 @@ route.get("/add-attendance", services.add_attendance);
  * @description updatda attendance
  * @method GET /update-attendance
  */
- route.get("/update-attendance", services.update_attendance);
+route.get("/update-attendance", services.update_attendance);
 
 // API
 route.post("/attendances", attendanceController.create);
-route.get("/attendances", attendanceController.find);
-route.put("/attendances/:id", controller.update);
+// route.get("/attendances", attendanceController.find);
+route.put("/attendances/:id", attendanceController.update);
 route.delete("/attendances/:id", attendanceController.delete);
+
+// Join tables
+route.get("/attendances", attendanceController.aggregate);
 
 module.exports = route;

@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 
+const autoIncrementModelID = require("./counterModel");
+
 var schema = new mongoose.Schema({
+  id: {
+    type: String,
+    require: true,
+  },
   name: {
     type: String,
     require: true,
@@ -31,6 +37,15 @@ var schema = new mongoose.Schema({
     type: String,
     require: true,
   },
+});
+
+schema.pre("save", function (next) {
+  if (!this.isNew) {
+    next();
+    return;
+  }
+
+  autoIncrementModelID("activities", this, next);
 });
 
 const Employeedb = mongoose.model("employeedb", schema);

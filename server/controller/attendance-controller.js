@@ -1,5 +1,6 @@
 // ---------------- attendance -------------------
 
+const { getMaxListeners } = require("../model/attendance");
 var Attendancedb = require("../model/attendance");
 
 // create and save new attendance
@@ -116,4 +117,37 @@ exports.delete = (req, res) => {
         message: "Could not delete attendance with id=" + id,
       });
     });
+};
+
+exports.aggregate = (req, res) => {
+  Attendancedb.aggregate([
+    {
+      $lookup: {
+        from: "employeedbs",
+        localField: "userId",
+        foreignField: "id",
+        as: "attendancedetail",
+      },
+    },
+
+    // {
+    //   $unwind: "$attendancedetail",
+    // },
+    {
+      $project: {
+        // "attendancedetail.id": 1,
+        // "attendancedetail.name": 1,
+        // "attendancedetail.email": 1,
+        // "attendancedetail.checkIn": 1,
+        _id: 0,
+      },
+    },
+  ]).exec((err, data) => {
+    if (err) {
+      res.send(err);
+    }
+    if (data) {
+      res.send(data);
+    }
+  });
 };

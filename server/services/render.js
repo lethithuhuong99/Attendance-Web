@@ -29,7 +29,7 @@ exports.update_user = (req, res) => {
 };
 
 exports.attendanceRoutes = (req, res) => {
-  // make a get request to /users
+  // make a get request to /attendances
   axios
     .get("http://localhost:3000/attendances")
     .then(function (response) {

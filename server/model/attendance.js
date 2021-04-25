@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 
-const autoIncrementModelID = require("./counterModel");
-
+  // id: { type: Number, unique: true, min: 1 },
 var schema = new mongoose.Schema({
-  id: { type: Number, unique: true, min: 1 },
   date: {
     type: String,
     require: true,
@@ -30,14 +28,7 @@ var schema = new mongoose.Schema({
   },
 });
 
-schema.pre("save", function (next) {
-  if (!this.isNew) {
-    next();
-    return;
-  }
 
-  autoIncrementModelID("activities", this, next);
-});
 
 const Attendancedb = mongoose.model("attendancedb", schema);
 
